@@ -166,7 +166,7 @@ def main():
 				filepath=os.path.join( i,str(countResults)+"_"+ action + "_results.txt")
 
 				with open(filepath,'rb') as f:
-					x = pickle.load(f)
+					res = pickle.load(f)
 
 				if countIterations == 2:
 						finalResults[res[1]] = []
