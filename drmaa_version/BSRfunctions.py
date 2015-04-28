@@ -1,5 +1,4 @@
 from Bio import SeqIO
-from BCBio import GFF
 from Bio.Blast import NCBIXML
 from Bio.Blast.Applications import NcbiblastnCommandline
 from Bio.Blast.Applications import NcbiblastpCommandline
@@ -9,8 +8,8 @@ import re
 import HTSeq
 import subprocess
 from Bio.Seq import Seq
-from CommonFastaFunctions import LoadAlelleFasta
-from CommonFastaFunctions import LoadAlellicProfileGeneric
+#from CommonFastaFunctions import LoadAlelleFasta
+#from CommonFastaFunctions import LoadAlellicProfileGeneric
 from CommonFastaFunctions import WriteFasta
 from CommonFastaFunctions import runBlast
 from CommonFastaFunctions import runBlastParser

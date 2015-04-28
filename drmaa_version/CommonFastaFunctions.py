@@ -8,7 +8,7 @@ from Bio.SeqRecord import SeqRecord
 from Bio.Blast import NCBIXML
 from Bio.Blast.Applications import NcbiblastnCommandline
 #from Counter import Counter #Counter.py is needed to run this script
-from collections import Counter
+#from collections import Counter
 import os
 import string
 from datetime import datetime
@@ -74,21 +74,21 @@ def Create_Blastdb( questionDB, overwrite, dbtypeProt ):
 		print "BLAST DB files found. Using existing DBs.."  
 	return( name )
 
-def LoadAlelleFasta( Allele_fasta_file ):
-	fp = HTSeq.FastaReader( Allele_fasta_file )
-	#allele_dict = dict( ( s.seq, s.name ) for s in fp )
-	allele_dict = {}  
-	allele_sizes = []
-	for s in fp:
-		allele_dict[s.seq.rstrip()]=s.name
-		allele_sizes.append(len(s.seq.rstrip()))
-		#print "Allele :" + s.name + " size: " + str(len(s.seq.rstrip()))#DEBUG
-	data = Counter(allele_sizes)
-	most_common_size = data.most_common(1)
-	allele_sizes = list(set(allele_sizes))	
-	# create BLAST db
-	db_name=Create_Blastdb( Allele_fasta_file )
-	return (allele_dict, allele_sizes, most_common_size, db_name)
+# def LoadAlelleFasta( Allele_fasta_file ):
+# 	fp = HTSeq.FastaReader( Allele_fasta_file )
+# 	#allele_dict = dict( ( s.seq, s.name ) for s in fp )
+# 	allele_dict = {}  
+# 	allele_sizes = []
+# 	for s in fp:
+# 		allele_dict[s.seq.rstrip()]=s.name
+# 		allele_sizes.append(len(s.seq.rstrip()))
+# 		#print "Allele :" + s.name + " size: " + str(len(s.seq.rstrip()))#DEBUG
+# 	data = Counter(allele_sizes)
+# 	most_common_size = data.most_common(1)
+# 	allele_sizes = list(set(allele_sizes))	
+# 	# create BLAST db
+# 	db_name=Create_Blastdb( Allele_fasta_file )
+# 	return (allele_dict, allele_sizes, most_common_size, db_name)
 	
 def LoadAlellicProfile( AP_file ):
 	AP_dict={}

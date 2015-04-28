@@ -37,6 +37,9 @@ def main():
 	isXML = args.x
 	blastResultsPath = args.v
 
+	if not os.path.isdir(resultsFolder):
+		os.makedirs(resultsFolder)
+
 	TimeFile = os.path.join(resultsFolder,'timeResults.txt')
 
 	fg = open(TimeFile, 'w')
@@ -58,9 +61,6 @@ def main():
 
 		if not os.path.isdir(databaseP):
 			os.makedirs(databaseP)
-
-		if not os.path.isdir(resultsFolder):
-			os.makedirs(resultsFolder)
 
 		if not os.path.isdir(blastResultsPath):
 			os.makedirs(blastResultsPath)
@@ -108,11 +108,13 @@ def main():
 
 			for queryFile in queryFilesOnDir:
 				countNumberOfLocus += 1
+				queryFolder = os.path.join(os.cwd(), alleleFolder)
 				if Tocheck == True:
+					queryPath = os.path.join(queryFolder, queryFile)
 					LocusToUse[queryPath] = True
 				LocusID[str(numberOfQueries)] = queryPath
 
-				listOfArgs = (queryFile, countNumberOfLocus, alleleFolder, resultsFolder, queryFileWithAll, databaseP, blastResultsPath, alleleScoreFile, LocusToUse)
+				listOfArgs = (queryPath, countNumberOfLocus, alleleFolder, resultsFolder, queryFileWithAll, databaseP, blastResultsPath, alleleScoreFile, LocusToUse)
 				job_args, allQueryBasePaths = create_pickle(listOfArgs, queryPath, countNumberOfLocus, job_args, allQueryBasePaths, action)
 
 
