@@ -33,12 +33,12 @@ def main():
 	args = parser.parse_args()
 
 
-	alleleFolder=args.a
-	databaseFolder = args.d
-	resultsFolder=args.r
-	databaseP = args.p
+	alleleFolder= os.path.join(os.getcwd(),args.a)
+	databaseFolder = os.path.join(os.getcwd(),args.a)
+	resultsFolder=os.path.join(os.getcwd(),args.a)
+	databaseP = os.path.join(os.getcwd(),args.a)
 	isXML = args.x
-	blastResultsPath = args.v
+	blastResultsPath = os.path.join(os.getcwd(),args.a)
 
 	if not os.path.isdir(resultsFolder):
 		os.makedirs(resultsFolder)
@@ -84,7 +84,7 @@ def main():
 		
 			####Self-BLAST (To be parallelized by locus file)
 
-			queryFilesOnDir = [ f for f in listdir(alleleFolder) if isfile(join(alleleFolder,f)) ]
+			#queryFilesOnDir = [ f for f in listdir(alleleFolder) if isfile(join(alleleFolder,f)) ]
 			countQuery = 0
 
 			print "Self-BLAST and check for duplicates"
@@ -108,11 +108,20 @@ def main():
 			allQueryBasePaths = []
 			action = "Locus"
 
+			fp = open(geneFile, 'r')
 
-			for queryFile in queryFilesOnDir:
+			queryFiles = []
+
+			for Locus in fp:
+				Locus = Locus.rstrip('\n')
+				Locus = Locus.rstrip('\r')
+				queryFiles.append( Locus )
+
+
+			for queryPath in queryFiles:
 				countNumberOfLocus += 1
-				queryFolder = os.path.join(os.getcwd(), alleleFolder)
-				queryPath = os.path.join(queryFolder, queryFile)
+				#queryFolder = os.path.join(os.getcwd(), alleleFolder)
+				#queryPath = os.path.join(queryFolder, queryFile)
 				if Tocheck == True:
 					
 					LocusToUse[queryPath] = True
@@ -121,7 +130,6 @@ def main():
 				listOfArgs = (queryPath, countNumberOfLocus, alleleFolder, resultsFolder, queryFileWithAll, databaseP, blastResultsPath, alleleScoreFile, LocusToUse)
 				job_args, allQueryBasePaths = create_pickle(listOfArgs, queryPath, countNumberOfLocus, job_args, allQueryBasePaths, action)
 
-			print allQueryBasePaths
 			joblist =[]
 
 			create_Jobs(job_args, 'Self_BLAST.py', allQueryBasePaths)
@@ -195,7 +203,7 @@ def main():
 
 		alleleScores = readCSValleleScores(os.path.join(resultsFolder,alleleScoreFile))
 
-		referenceGenomesOnDir = [ f for f in listdir(databaseFolder) if isfile(join(databaseFolder,f)) ] #Check for all genomes in reference Database folder
+		#referenceGenomesOnDir = [ f for f in listdir(databaseFolder) if isfile(join(databaseFolder,f)) ] #Check for all genomes in reference Database folder
 
 		print "BSR"
 
@@ -208,8 +216,17 @@ def main():
 		GenomesID = {}
 		allQueryBasePaths = []
 		action = "BSR"
+
+		fp = open(genomeFile, 'r')
+
+		referenceGenomes = []
+
+		for genome in fp:
+			genome = genome.rstrip('\n')
+			genome = genome.rstrip('\r')
+			referenceGenomes.append( genome )
 		
-		for referenceGenome in referenceGenomesOnDir:
+		for referenceGenome in referenceGenomes:
 			countNumberOfGenomes += 1
 			GenomesID[countNumberOfGenomes] = referenceGenome
 			
@@ -321,6 +338,9 @@ def main():
 			print 'Creating PhyloviZ input file...'
 
 			createPhylovizFile(finalResults, GenomesID, LocusID, resultsFolder)
+
+			shutil.rmtree(databaseFolder)
+			shutil.rmtree(databaseP)
 
 			print 'DONE!'
 			print 'Total:' + str(datetime.now() - startTime)
