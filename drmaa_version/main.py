@@ -131,9 +131,9 @@ def main():
 					x = pickle.load(f)
 
 				if x[4] == False:	
-						dictOfChanges[str(x[2])] = [x[0], x[1], x[3]] #correctAlleleNumber, sameAlleles, prevAlleleNames  VER O QUE ESTA MAL
-					else:
-						dictOfChanges[str(x[2])] = False
+					dictOfChanges[str(x[2])] = [x[0], x[1], x[3]] #correctAlleleNumber, sameAlleles, prevAlleleNames  VER O QUE ESTA MAL
+				else:
+					dictOfChanges[str(x[2])] = False
 
 
 			print 'End of Self-BLAST: ' + str(datetime.now() - startTimeBLAST)
@@ -171,12 +171,12 @@ def main():
 					res = pickle.load(f)
 
 				if countIterations == 2:
-						finalResults[res[1]] = []
-						finalResults[res[1]].append(res[0])
-					else:
-						for locus in finalResults[res[1]][0]:
-							if finalResults[res[1]][0][locus][0] == 'LNF' and (res[0][locus][0] == 'INF' or res[0][locus][0] == 'EXM'):
-								finalResults[res[1]][0][locus] = res[0][locus]
+					finalResults[res[1]] = []
+					finalResults[res[1]].append(res[0])
+				else:
+					for locus in finalResults[res[1]][0]:
+						if finalResults[res[1]][0][locus][0] == 'LNF' and (res[0][locus][0] == 'INF' or res[0][locus][0] == 'EXM'):
+							finalResults[res[1]][0][locus] = res[0][locus]
 
 
 		alleleScores = {}
