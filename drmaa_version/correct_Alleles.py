@@ -1,5 +1,9 @@
 #!/usr/bin/python
 from BSRfunctions import correctAlleles
+import sys
+import pickle
+import os
+
 
 def main():
 
@@ -19,7 +23,7 @@ def main():
 
 	    final =	(newArrayOfResults, genomeID)
 
-	    filepath=os.path.join(temppath , args[1]+"_Correct_result.txt")
+	    filepath=os.path.join(temppath , str(args[3])+"_Correct_result.txt")
 
 	    with open(filepath, 'wb') as f:
 			pickle.dump(final, f)

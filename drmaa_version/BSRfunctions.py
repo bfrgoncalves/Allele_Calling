@@ -1,9 +1,10 @@
+#!/usr/bin/python
 from Bio import SeqIO
 from Bio.Blast import NCBIXML
 from Bio.Blast.Applications import NcbiblastnCommandline
 from Bio.Blast.Applications import NcbiblastpCommandline
 import sys
-#!/usr/bin/python
+
 import os
 import re
 import HTSeq
@@ -75,10 +76,11 @@ def func_BSR(referenceGenome, countNumberOfGenomes, databaseFolder, resultsFolde
     startTime = datetime.now()
 
     TimeFile = os.path.join(resultsFolder,'timeResults.txt')
-
+    print "--------------------"
     referenceDatabasePath, referenceCDS, referenceGenomeArray, referenceCDSsequences = CreateReferenceDatabase(os.path.join(databaseFolder,referenceGenome), databaseP, databaseName, str(countNumberOfGenomes)) #Create Database with one genome
+    print "_______________"
     resultsList, addNewAlleles = getBlastScoreRatios(alleleScores, alleleList, referenceDatabasePath, os.path.join(resultsFolder,queryFileWithAll), referenceGenomeArray, referenceCDS, bestmatches, referenceCDSsequences, referenceGenome, str(countNumberOfGenomes), blastResultsPath, LocusToUse) #Get BLAST Score Ratio and call alleles
-
+    print resultsList
 
     INF, EXM, LNF = checkNumberOfResults(resultsList)
 
@@ -283,6 +285,8 @@ def CreateReferenceDatabase(referenceFASTA, databasePath, nameDB, numberRefGenom
 
 
 def CreateQueryDatabase(FASTAfile, databasePath,queryProteomeName):
+	
+	
     gene_fp = HTSeq.FastaReader(FASTAfile)
     names=""
     alleleProt=''
@@ -361,7 +365,9 @@ def CreateQueryDatabase(FASTAfile, databasePath,queryProteomeName):
 
 
 def getOwnBlastScore(FASTAfile, databasePath, queryProteomeName, numberOfLocus, blastResultsPath, LocusToUse, queryFile):
-
+	
+	
+    print FASTAfile
     allelescores = []
     alleleNumbers = {}
     sameAlleles = {}
@@ -372,8 +378,11 @@ def getOwnBlastScore(FASTAfile, databasePath, queryProteomeName, numberOfLocus, 
 
     if isEmpty:
         return allelescores, isEmpty, proteinsToQueryFile, alleleNumbers, sameAlleles, prevAlleleName
-
-    blast_out_file = blastResultsPath + '/' + numberOfLocus + '_BLASTresults.xml'
+	
+    print blastResultsPath
+    print numberOfLocus
+	
+    blast_out_file = blastResultsPath + numberOfLocus + '_BLASTresults.xml'
 
     cline = NcbiblastpCommandline(query=queryProteomeName, db=databasePath, out=blast_out_file, outfmt=5, num_alignments=7000, num_descriptions=7000)
 
@@ -796,6 +805,7 @@ def gatherAllQueries(queryPath):
         queryFilesOnDir = [ f for f in listdir(queryPath) if isfile(join(queryPath,f)) ]
         countFiles = 0
         for queryFile in queryFilesOnDir:
+            AllqueryFile = os.path.join(queryPath,queryFile)
             if queryFile == 'Allalleles.fasta':
                 continue
 
@@ -807,7 +817,7 @@ def gatherAllQueries(queryPath):
                 #ToWrite.append(">" + str(countFiles) + '--' + str(countAlleles) +"\n"+ str(allele.seq).upper() + "\n")
                 alleleList[str(countFiles) + '--' + str(countAlleles)] = str(allele.seq).upper()
 
-            bestmatches[str(countFiles)] = [0,0,False,'','','',0,'', str(countAlleles), queryFile] #To be used when searching for new alleles. On instance for each locus
+            bestmatches[str(countFiles)] = [0,0,False,'','','',0,'', str(countAlleles), AllqueryFile] #To be used when searching for new alleles. On instance for each locus
                                             #Score, ScoreRatio, Found, queryName, HitName, MatchObject, lengthReference, lengthQuery, numberOfExistingAllelesForThatLocus
 
         #CreateNewAlleleFile(os.path.join(queryPath,'Allalleles.fasta'), ToWrite)

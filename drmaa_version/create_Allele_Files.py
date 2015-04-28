@@ -1,5 +1,8 @@
 #!/usr/bin/python
 from BSRfunctions import NewAlleleFiles
+import sys
+import pickle
+import os
 
 def main():
 
@@ -13,13 +16,14 @@ def main():
 	
 	with open(input_file,'rb') as f:
 		argumentList = pickle.load(f)
-
-	def CreateNewAlleleFiles(args):
-    	NewAlleleFiles(args[0], args[1])
-
-    	return True
-
 	CreateNewAlleleFiles(argumentList)
+	
+def CreateNewAlleleFiles(args):
+    NewAlleleFiles(args[0], args[1])
+
+    return True
+
+	
 
 if __name__ == "__main__":
     main()

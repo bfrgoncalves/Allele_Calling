@@ -10,6 +10,9 @@ from os.path import isfile, join
 import argparse
 from datetime import datetime
 import sys
+from create_Jobs import create_pickle
+from create_Jobs import create_Jobs
+import pickle
 
 
 def main():
@@ -108,16 +111,17 @@ def main():
 
 			for queryFile in queryFilesOnDir:
 				countNumberOfLocus += 1
-				queryFolder = os.path.join(os.cwd(), alleleFolder)
+				queryFolder = os.path.join(os.getcwd(), alleleFolder)
+				queryPath = os.path.join(queryFolder, queryFile)
 				if Tocheck == True:
-					queryPath = os.path.join(queryFolder, queryFile)
+					
 					LocusToUse[queryPath] = True
-				LocusID[str(numberOfQueries)] = queryPath
+				LocusID[str(countNumberOfLocus)] = queryPath
 
 				listOfArgs = (queryPath, countNumberOfLocus, alleleFolder, resultsFolder, queryFileWithAll, databaseP, blastResultsPath, alleleScoreFile, LocusToUse)
 				job_args, allQueryBasePaths = create_pickle(listOfArgs, queryPath, countNumberOfLocus, job_args, allQueryBasePaths, action)
 
-
+			print allQueryBasePaths
 			joblist =[]
 
 			create_Jobs(job_args, 'Self_BLAST.py', allQueryBasePaths)
@@ -125,7 +129,7 @@ def main():
 			countResults = 0
 			for i in allQueryBasePaths:
 				countResults += 1
-				filepath=os.path.join( i,str(countResults)+"_"+ action + "_results.txt")
+				filepath=os.path.join( i,str(countResults)+"_"+ action + "_result.txt")
 
 				with open(filepath,'rb') as f:
 					x = pickle.load(f)
@@ -150,12 +154,12 @@ def main():
 			action = "Correct"
 			
 			for i in arrayOfResults:
-
-				listOfArgs = (arrayOfResults[i], dictOfChanges, i)
-
-				queryPath = os.path.join(os.cwd(), 'correctAlleles')
-
 				countNumberOfResults += 1
+				listOfArgs = (arrayOfResults[i], dictOfChanges, i,countNumberOfResults)
+
+				queryPath = os.path.join(os.getcwd(), 'correctAlleles')
+
+				
 
 				job_args, allQueryBasePaths = create_pickle(listOfArgs, queryPath, countNumberOfResults, job_args, allQueryBasePaths, action)
 
@@ -165,7 +169,7 @@ def main():
 			countResults = 0
 			for i in allQueryBasePaths:
 				countResults += 1
-				filepath=os.path.join( i,str(countResults)+"_"+ action + "_results.txt")
+				filepath=os.path.join( i,str(countResults)+"_"+ action + "_result.txt")
 
 				with open(filepath,'rb') as f:
 					res = pickle.load(f)
@@ -211,10 +215,11 @@ def main():
 			
 			listOfArgs = (referenceGenome, countNumberOfGenomes, databaseFolder, resultsFolder, queryFileWithAll, databaseP, blastResultsPath, alleleFolder, alleleScores, LocusToUse)
 
-			queryPath = os.path.join(os.cwd(), 'BSR')
+			queryPath = os.path.join(os.getcwd(), 'BSR')
 			job_args, allQueryBasePaths = create_pickle(listOfArgs, queryPath, countNumberOfGenomes, job_args, allQueryBasePaths, action)
-
-
+		
+		print "________________________-"
+		print allQueryBasePaths
 		create_Jobs(job_args, 'BSR.py', allQueryBasePaths)
 
 		startTimeBLAST = datetime.now()
@@ -226,7 +231,7 @@ def main():
 		countResults = 0
 		for i in allQueryBasePaths:
 			countResults += 1
-			filepath=os.path.join( i,str(countResults)+"_"+ action + "_results.txt")
+			filepath=os.path.join( i,str(countResults)+"_"+ action + "_result.txt")
 
 			with open(filepath,'rb') as f:
 				x = pickle.load(f)
@@ -242,8 +247,6 @@ def main():
 		textToFile = 'End of BSR at: '
 		WriteTimeResults(textToFile, str(datetime.now() - startTime), TimeFile)
 		
-		poolJobs.close()
-		poolJobs.join()
 
 		addNewAlleles = False
 		for i in addNewAllelesArray:
@@ -263,8 +266,8 @@ def main():
 
 			for i in arrayOfResults:
 				countNumberOfResults += 1
-				listOfArgs = (arrayOfResults[i], arrayOfGenomes[i])
-				queryPath = os.path.join(os.cwd(), 'Check_ToWrite')
+				listOfArgs = (arrayOfResults[i], arrayOfGenomes[i],countNumberOfResults)
+				queryPath = os.path.join(os.getcwd(), 'Check_ToWrite')
 				job_args, allQueryBasePaths = create_pickle(listOfArgs, queryPath, countNumberOfResults, job_args, allQueryBasePaths, action)
 
 			create_Jobs(job_args, 'filter_Results.py', allQueryBasePaths)
@@ -275,7 +278,7 @@ def main():
 			countResults = 0
 			for i in allQueryBasePaths:
 				countResults += 1
-				filepath=os.path.join( i,str(countResults)+"_"+ action + "_results.txt")
+				filepath=os.path.join( i,str(countResults)+"_"+ action + "_result.txt")
 
 				with open(filepath,'rb') as f:
 					x = pickle.load(f)
@@ -300,7 +303,7 @@ def main():
 			for locus in ToWriteDict:
 				countNumberOfResults += 1
 				listOfArgs = (ToWriteDict[locus], alleleFolder)
-				queryPath = os.path.join(os.cwd(), 'Create_NewAlleleFiles')
+				queryPath = os.path.join(os.getcwd(), 'Create_NewAlleleFiles')
 				job_args, allQueryBasePaths = create_pickle(listOfArgs, queryPath, countNumberOfResults, job_args, allQueryBasePaths, action)
 
 			create_Jobs(job_args, 'create_Allele_Files.py', allQueryBasePaths)

@@ -1,6 +1,8 @@
 #!/usr/bin/python
 from BSRfunctions import func_Self_BLAST
-
+import sys
+import pickle
+import os
 
 def main():
 
@@ -12,6 +14,8 @@ def main():
 
 	argumentList=[]
 	
+	print type(input_file)
+	print input_file
 	with open(input_file,'rb') as f:
 		argumentList = pickle.load(f)
 
@@ -21,7 +25,7 @@ def main():
 
 	    final =	(alleleNumbers, sameAlleles, countNumberOfLocus, prevAlleleNames, isEmpty)
 
-	    filepath=os.path.join(temppath , args[1]+"_Locus_result.txt")
+	    filepath=os.path.join(temppath , str(args[1])+"_Locus_result.txt")
 
 	    with open(filepath, 'wb') as f:
 			pickle.dump(final, f)

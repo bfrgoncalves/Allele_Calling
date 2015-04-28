@@ -1,7 +1,8 @@
 #!/usr/bin/python
 import drmaa
-import os
+import sys
 import pickle
+import os
 
 def create_pickle(listOfArgs, queryPath, numberOfQueries, job_args, allQueryBasePaths, action):
 
@@ -14,7 +15,7 @@ def create_pickle(listOfArgs, queryPath, numberOfQueries, job_args, allQueryBase
 	with open(filepath, 'wb') as f:
 		var = listOfArgs
 		pickle.dump(var, f)
-	job_args.append(f)
+	job_args.append(filepath)
 
 	return job_args, allQueryBasePaths
 
@@ -27,6 +28,7 @@ def create_Jobs(job_args, pythonScript, allQueryBasePaths):
 		for argList in job_args:
 			jt = s.createJobTemplate()
 			jt.remoteCommand = os.path.join(os.getcwd(), pythonScript)
+			print str(argList),allQueryBasePaths[countargList]
 			jt.args = [str(argList),allQueryBasePaths[countargList]]
 			jt.joinFiles=True
 			jt.nativeSpecification='-V'
