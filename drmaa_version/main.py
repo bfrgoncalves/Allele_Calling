@@ -135,7 +135,7 @@ def main():
 					LocusToUse[queryPath] = True
 				LocusID[str(countNumberOfLocus)] = queryPath
 
-				listOfArgs = (queryPath, countNumberOfLocus, alleleFolder, resultsFolder, queryFileWithAll, databaseP, blastResultsPath, alleleScoreFile, LocusToUse)
+				listOfArgs = (queryPath, countNumberOfLocus, resultsFolder, queryFileWithAll, databaseP, blastResultsPath, alleleScoreFile, LocusToUse)
 				job_args, allQueryBasePaths = create_pickle(listOfArgs, queryPath, countNumberOfLocus, job_args, allQueryBasePaths, action)
 
 			joblist =[]
