@@ -1,4 +1,5 @@
-from BSRfunctions import BSR
+#!/usr/bin/python
+from BSRfunctions import func_BSR
 
 
 def main():

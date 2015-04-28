@@ -1,4 +1,5 @@
-from BSRfunctions import CreateNewAlleleFiles
+#!/usr/bin/python
+from BSRfunctions import NewAlleleFiles
 
 def main():
 

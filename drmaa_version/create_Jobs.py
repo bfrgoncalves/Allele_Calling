@@ -1,4 +1,7 @@
+#!/usr/bin/python
 import drmaa
+import os
+import pickle
 
 def create_pickle(listOfArgs, queryPath, numberOfQueries, job_args, allQueryBasePaths, action):
 
@@ -18,7 +21,7 @@ def create_pickle(listOfArgs, queryPath, numberOfQueries, job_args, allQueryBase
 
 
 def create_Jobs(job_args, pythonScript, allQueryBasePaths):
-	
+	joblist = []
 	countargList = 0
 	with drmaa.Session() as s:
 		for argList in job_args:

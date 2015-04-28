@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from BSRfunctions import func_Self_BLAST
 
 
@@ -28,7 +29,7 @@ def main():
 	    return True
 
 
-	func_Self_BLAST(argumentList)
+	SelfBLAST(argumentList)
 
 if __name__ == "__main__":
     main()

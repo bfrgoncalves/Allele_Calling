@@ -3,6 +3,7 @@ from Bio.Blast import NCBIXML
 from Bio.Blast.Applications import NcbiblastnCommandline
 from Bio.Blast.Applications import NcbiblastpCommandline
 import sys
+#!/usr/bin/python
 import os
 import re
 import HTSeq

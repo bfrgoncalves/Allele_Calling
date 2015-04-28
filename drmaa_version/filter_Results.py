@@ -1,4 +1,5 @@
-from BSRfunctions import check_ToWrite
+#!/usr/bin/python
+from BSRfunctions import TowriteToAlleleFiles
 
 def main():
 

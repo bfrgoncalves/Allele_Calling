@@ -1,4 +1,4 @@
-
+#!/usr/bin/python
 from BSRfunctions import readCSValleleScores
 from BSRfunctions import WriteTimeResults
 from BSRfunctions import createPhylovizFile

@@ -1,4 +1,5 @@
-from BSRfunctions import get_correctAlleles
+#!/usr/bin/python
+from BSRfunctions import correctAlleles
 
 def main():
 
