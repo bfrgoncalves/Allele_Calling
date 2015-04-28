@@ -33,12 +33,29 @@ def main():
 	args = parser.parse_args()
 
 
-	alleleFolder= os.path.join(os.getcwd(),args.a)
-	databaseFolder = os.path.join(os.getcwd(),args.a)
-	resultsFolder=os.path.join(os.getcwd(),args.a)
-	databaseP = os.path.join(os.getcwd(),args.a)
+	geneFile= args.a
+	genomeFile = args.d
+	resultsFolder=os.path.join(os.getcwd(),args.p)
+	databaseP = os.path.join(os.getcwd(),args.r)
 	isXML = args.x
-	blastResultsPath = os.path.join(os.getcwd(),args.a)
+	blastResultsPath = os.path.join(os.getcwd(),args.v)
+
+	alleleFolder = os.path.join(resultsFolder, "queryLocus")
+
+	if not os.path.isdir(alleleFolder):
+		os.makedirs(alleleFolder)
+	else:
+		shutil.rmtree(alleleFolder)
+
+	fp = open(geneFile, 'r')
+
+	for Locus in fp:
+		Locus = Locus.rstrip('\n')
+		Locus = Locus.rstrip('\r')
+
+		shutil.copy2(Locus, alleleFolder)
+
+
 
 	if not os.path.isdir(resultsFolder):
 		os.makedirs(resultsFolder)
@@ -84,7 +101,7 @@ def main():
 		
 			####Self-BLAST (To be parallelized by locus file)
 
-			#queryFilesOnDir = [ f for f in listdir(alleleFolder) if isfile(join(alleleFolder,f)) ]
+			queryFilesOnDir = [ f for f in listdir(alleleFolder) if isfile(join(alleleFolder,f)) ]
 			countQuery = 0
 
 			print "Self-BLAST and check for duplicates"
@@ -108,20 +125,11 @@ def main():
 			allQueryBasePaths = []
 			action = "Locus"
 
-			fp = open(geneFile, 'r')
 
-			queryFiles = []
-
-			for Locus in fp:
-				Locus = Locus.rstrip('\n')
-				Locus = Locus.rstrip('\r')
-				queryFiles.append( Locus )
-
-
-			for queryPath in queryFiles:
+			for queryPath in queryFilesOnDir:
 				countNumberOfLocus += 1
-				#queryFolder = os.path.join(os.getcwd(), alleleFolder)
-				#queryPath = os.path.join(queryFolder, queryFile)
+				queryFolder = os.path.join(os.getcwd(), alleleFolder)
+				queryPath = os.path.join(queryFolder, queryFile)
 				if Tocheck == True:
 					
 					LocusToUse[queryPath] = True
@@ -230,7 +238,7 @@ def main():
 			countNumberOfGenomes += 1
 			GenomesID[countNumberOfGenomes] = referenceGenome
 			
-			listOfArgs = (referenceGenome, countNumberOfGenomes, databaseFolder, resultsFolder, queryFileWithAll, databaseP, blastResultsPath, alleleFolder, alleleScores, LocusToUse)
+			listOfArgs = (referenceGenome, countNumberOfGenomes, resultsFolder, queryFileWithAll, databaseP, blastResultsPath, alleleFolder, alleleScores, LocusToUse)
 
 			queryPath = os.path.join(os.getcwd(), 'BSR')
 			job_args, allQueryBasePaths = create_pickle(listOfArgs, queryPath, countNumberOfGenomes, job_args, allQueryBasePaths, action)

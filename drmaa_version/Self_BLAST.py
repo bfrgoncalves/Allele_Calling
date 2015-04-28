@@ -21,7 +21,7 @@ def main():
 
 
 	def SelfBLAST(args):
-	    alleleNumbers, sameAlleles, countNumberOfLocus, prevAlleleNames, isEmpty = func_Self_BLAST(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8])
+	    alleleNumbers, sameAlleles, countNumberOfLocus, prevAlleleNames, isEmpty = func_Self_BLAST(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7])
 
 	    final =	(alleleNumbers, sameAlleles, countNumberOfLocus, prevAlleleNames, isEmpty)
 

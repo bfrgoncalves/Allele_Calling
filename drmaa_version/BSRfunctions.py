@@ -30,7 +30,7 @@ def SelfBLAST(args):
     return alleleNumbers, sameAlleles, countNumberOfLocus, prevAlleleNames, isEmpty
 
 def BSR(args):
-     resultsList, referenceCDSsequences, addNewAlleles = func_BSR(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9])
+     resultsList, referenceCDSsequences, addNewAlleles = func_BSR(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8])
      return resultsList, referenceCDSsequences, args[1], addNewAlleles
 
 def check_ToWrite(args):
@@ -47,13 +47,13 @@ def get_correctAlleles(args):
 
 
 
-def func_Self_BLAST(queryFile, countNumberOfLocus, alleleFolder, resultsFolder, queryFileWithAll, databaseP, blastResultsPath, alleleScoreFile, LocusToUse):
+def func_Self_BLAST(queryFile, countNumberOfLocus, resultsFolder, queryFileWithAll, databaseP, blastResultsPath, alleleScoreFile, LocusToUse):
     queryFile = queryFile
     queryProtName = str(countNumberOfLocus)+'.fasta'
 
 
 
-    alleleScores, isEmpty, proteinSeqToConcat, alleleNumbers, sameAlleles, prevAlleleNames = getOwnBlastScore(os.path.join(alleleFolder,queryFile), databaseP, queryProtName, str(countNumberOfLocus), blastResultsPath, LocusToUse, queryFile) #Self-BLAST to get Own Score
+    alleleScores, isEmpty, proteinSeqToConcat, alleleNumbers, sameAlleles, prevAlleleNames = getOwnBlastScore(queryFile, databaseP, queryProtName, str(countNumberOfLocus), blastResultsPath, LocusToUse, queryFile) #Self-BLAST to get Own Score
     writeAlleleScoresToFile(alleleScores,os.path.join(resultsFolder,alleleScoreFile))
     if proteinSeqToConcat != False:
         writeQuerySeqToFile(proteinSeqToConcat,os.path.join(resultsFolder,queryFileWithAll))
@@ -63,7 +63,7 @@ def func_Self_BLAST(queryFile, countNumberOfLocus, alleleFolder, resultsFolder, 
     return alleleNumbers, sameAlleles, countNumberOfLocus, prevAlleleNames, isEmpty
 
 
-def func_BSR(referenceGenome, countNumberOfGenomes, databaseFolder, resultsFolder, queryFileWithAll, databaseP, blastResultsPath, alleleFolder, alleleScores, LocusToUse):
+def func_BSR(referenceGenome, countNumberOfGenomes, resultsFolder, queryFileWithAll, databaseP, blastResultsPath, alleleFolder, alleleScores, LocusToUse):
     isDone, alleleList, bestmatches = gatherAllQueries(alleleFolder) #MUDAR
     if isDone:
         queryFileWithAll = 'Allalleles.fasta'
@@ -77,7 +77,7 @@ def func_BSR(referenceGenome, countNumberOfGenomes, databaseFolder, resultsFolde
 
     TimeFile = os.path.join(resultsFolder,'timeResults.txt')
     print "--------------------"
-    referenceDatabasePath, referenceCDS, referenceGenomeArray, referenceCDSsequences = CreateReferenceDatabase(os.path.join(databaseFolder,referenceGenome), databaseP, databaseName, str(countNumberOfGenomes)) #Create Database with one genome
+    referenceDatabasePath, referenceCDS, referenceGenomeArray, referenceCDSsequences = CreateReferenceDatabase(referenceGenome, databaseP, databaseName, str(countNumberOfGenomes)) #Create Database with one genome
     print "_______________"
     resultsList, addNewAlleles = getBlastScoreRatios(alleleScores, alleleList, referenceDatabasePath, os.path.join(resultsFolder,queryFileWithAll), referenceGenomeArray, referenceCDS, bestmatches, referenceCDSsequences, referenceGenome, str(countNumberOfGenomes), blastResultsPath, LocusToUse) #Get BLAST Score Ratio and call alleles
     print resultsList
