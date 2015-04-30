@@ -35,17 +35,19 @@ def main():
 
 	geneFile= args.a
 	genomeFile = args.d
-	resultsFolder=os.path.join(os.getcwd(),args.p)
-	databaseP = os.path.join(os.getcwd(),args.r)
+	resultsFolder=os.path.join(os.getcwd(),args.r)
+	databaseP = os.path.join(os.getcwd(),args.p)
 	isXML = args.x
 	blastResultsPath = os.path.join(os.getcwd(),args.v)
 
-	alleleFolder = os.path.join(resultsFolder, "queryLocus")
+	alleleFolder = os.path.join(resultsFolder, "queryLocus/")
+	print alleleFolder
 
 	if not os.path.isdir(alleleFolder):
 		os.makedirs(alleleFolder)
 	else:
 		shutil.rmtree(alleleFolder)
+		os.makedirs(alleleFolder)
 
 	fp = open(geneFile, 'r')
 
@@ -72,7 +74,7 @@ def main():
 	arrayOfResults = {}
 
 
-	def runIteration(alleleFolder, databaseFolder, resultsFolder, databaseP, isXML, runFirstBLAST, blastResultsPath, countIterations, LocusToUse, finalResults, arrayOfResults):
+	def runIteration(alleleFolder, genomeFile, resultsFolder, databaseP, isXML, runFirstBLAST, blastResultsPath, countIterations, LocusToUse, finalResults, arrayOfResults):
 
 
 		countIterations += 1
@@ -126,7 +128,7 @@ def main():
 			action = "Locus"
 
 
-			for queryPath in queryFilesOnDir:
+			for queryFile in queryFilesOnDir:
 				countNumberOfLocus += 1
 				queryFolder = os.path.join(os.getcwd(), alleleFolder)
 				queryPath = os.path.join(queryFolder, queryFile)
@@ -336,7 +338,7 @@ def main():
 
 		if addNewAlleles == True:
 			LocusToUse = checkLocusToUse(arrayOfResults, LocusID, countIterations)
-			runIteration(alleleFolder, databaseFolder, resultsFolder, databaseP, isXML, True, blastResultsPath, countIterations, LocusToUse, finalResults, arrayOfResults)
+			runIteration(alleleFolder, genomeFile, resultsFolder, databaseP, isXML, True, blastResultsPath, countIterations, LocusToUse, finalResults, arrayOfResults)
 		
 		# elif getProfile == True:
 		# 	getProfile = False
@@ -347,15 +349,20 @@ def main():
 
 			createPhylovizFile(finalResults, GenomesID, LocusID, resultsFolder)
 
-			shutil.rmtree(databaseFolder)
+			#shutil.rmtree(databaseFolder)
 			shutil.rmtree(databaseP)
+<<<<<<< HEAD
 			os.remove(os.path.join(resultsFolder, alleleScoreFile)
+=======
+			shutil.rmtree(blastResultsPath)
+			shutil.rmtree(os.path.join(os.getcwd(), "temp"))
+>>>>>>> fba180d7178c402a7450360fec32c3f94bb559d3
 
 			print 'DONE!'
 			print 'Total:' + str(datetime.now() - startTime)
 			sys.exit()
 
-	runIteration(alleleFolder, databaseFolder, resultsFolder, databaseP, isXML, True, blastResultsPath, countIterations, LocusToUse, finalResults, arrayOfResults)
+	runIteration(alleleFolder, genomeFile, resultsFolder, databaseP, isXML, True, blastResultsPath, countIterations, LocusToUse, finalResults, arrayOfResults)
 
 if __name__ == "__main__":
 	countNumberOfLocus = 0
