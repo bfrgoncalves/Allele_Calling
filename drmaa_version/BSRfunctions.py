@@ -303,7 +303,9 @@ def CreateQueryDatabase(FASTAfile, databasePath,queryProteomeName):
             countAlleles+=1
             isEmpty = False
         except:
-            #print 'Could not translate'
+            print 'Could not translate'
+            print FASTAfile
+            print "_________________"
             if countAlleles==0:
                 isEmpty = True
             continue

@@ -351,12 +351,11 @@ def main():
 
 			#shutil.rmtree(databaseFolder)
 			shutil.rmtree(databaseP)
-<<<<<<< HEAD
-			os.remove(os.path.join(resultsFolder, alleleScoreFile)
-=======
+			shutil.rmtree(alleleFolder)
+			os.remove(os.path.join(resultsFolder, alleleScoreFile))
+			os.remove(os.path.join(resultsFolder, queryFileWithAll))
 			shutil.rmtree(blastResultsPath)
 			shutil.rmtree(os.path.join(os.getcwd(), "temp"))
->>>>>>> fba180d7178c402a7450360fec32c3f94bb559d3
 
 			print 'DONE!'
 			print 'Total:' + str(datetime.now() - startTime)

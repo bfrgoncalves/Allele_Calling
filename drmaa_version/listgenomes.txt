@@ -1,0 +1,10 @@
+/home/msilva/allelecall/drmaaBruno/genomes/10.spades_contigs.fasta
+/home/msilva/allelecall/drmaaBruno/genomes/11.spades_contigs.fasta
+/home/msilva/allelecall/drmaaBruno/genomes/12.spades_contigs.fasta
+/home/msilva/allelecall/drmaaBruno/genomes/13.spades_contigs.fasta
+/home/msilva/allelecall/drmaaBruno/genomes/15.spades_contigs.fasta
+/home/msilva/allelecall/drmaaBruno/genomes/1.spades_contigs.fasta
+/home/msilva/allelecall/drmaaBruno/genomes/4.spades_contigs.fasta
+/home/msilva/allelecall/drmaaBruno/genomes/6.spades_contigs.fasta
+/home/msilva/allelecall/drmaaBruno/genomes/8.spades_contigs.fasta
+/home/msilva/allelecall/drmaaBruno/genomes/9.spades_contigs.fasta
